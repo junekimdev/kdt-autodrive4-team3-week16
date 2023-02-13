@@ -1,4 +1,4 @@
-# Traffic Sign Positional Estimation
+# Traffic Sign Position Estimation
 
 ## Key Objectives for This Project
 
