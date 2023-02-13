@@ -56,7 +56,7 @@ import tensorrt as trt
 from PIL import Image,ImageDraw
 import rospy
 
-from t3_msgs.msg import BoundingBox, object_data, traffic_light_image
+from t3_msgs.msg import BoundingBox, object_data
 from sensor_msgs.msg import Image as Imageros
 
 from data_processing import PreprocessYOLO, PostprocessYOLO, ALL_CATEGORIES
@@ -64,9 +64,10 @@ import common
 
 NAME = "yolov3-trt"
 FILE_DIR = "/home/nvidia/xycar_ws/src/t3_sensor_object/src"
-SUB_TOPIC = "/usb_cam/image_raw"
+CONFIG_FILENAME = "yolov3-tiny_tstl352.cfg"
+MODEL_FILENAME = "t3_model.trt"
+SUB_TOPIC = "usb_cam/image_raw"
 PUB_TOPIC_OBJECT = "object_data"
-PUB_TOPIC_TRAFFIC = "traffic_light_image"
 NUM_CLASS = 6
 TRT_LOGGER = trt.Logger(trt.Logger.WARNING)
 
@@ -83,8 +84,8 @@ class yolov3_trt(object):
             enable_debug = rospy.get_param("sensor_object_enable_debug")
         self.show_img = enable_debug
         self.num_class = NUM_CLASS
-        self.cfg_file_path = os.path.join(FILE_DIR, "yolov3-tiny_tstl352.cfg")
-        self.engine_file_path = os.path.join(FILE_DIR, "t3_model.trt")
+        self.cfg_file_path = os.path.join(FILE_DIR, CONFIG_FILENAME)
+        self.engine_file_path = os.path.join(FILE_DIR, MODEL_FILENAME)
         width, height, masks, anchors = parse_cfg_wh(self.cfg_file_path)
 
         # Two-dimensional tuple with the target network's (spatial) input resolution in HW ordered
@@ -113,7 +114,6 @@ class yolov3_trt(object):
         self.context = self.engine.create_execution_context()
         
         self.detection_pub = rospy.Publisher(PUB_TOPIC_OBJECT, object_data, queue_size=1)
-        self.traffic_pub = rospy.Publisher(PUB_TOPIC_TRAFFIC, traffic_light_image, queue_size=1)
 
     def detect(self):
         rate = rospy.Rate(10)
@@ -172,7 +172,6 @@ class yolov3_trt(object):
         obj_msg = object_data()
         obj_msg.header.stamp = rospy.Time.now()
         obj_msg.header.frame_id = NAME
-        traffic_msg = traffic_light_image()
 
         # self._write_message(obj_msg, boxes, confs, classes)
         if boxes is not None:
@@ -186,18 +185,7 @@ class yolov3_trt(object):
                 msg_bbox.ymax = int(miny + height)
                 msg_bbox.probability = score
                 msg_bbox.id = int(category)
-                if category != 5:
-                    obj_msg.bounding_boxes.append(msg_bbox)
-                else:
-                    traffic_msg.header.stamp = rospy.Time.now()
-                    traffic_msg.header.frame_id = NAME+"traffic"
-                    traffic_msg.bounding_box = msg_bbox
-                    # img = np.array(np.transpose(image[0], (1,2,0)) * 255, dtype=np.uint8)
-                    # img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-                    # traffic_msg.step = img.shape[1]*image.shape[2]
-                    # flat = img.reshape(1, -1)
-                    # traffic_msg.image_data = flat.tobytes() if image.data.contiguous else flat.copy().tobytes()
-                    self.traffic_pub.publish(traffic_msg)
+                obj_msg.bounding_boxes.append(msg_bbox)
         self.detection_pub.publish(obj_msg)
 
 
