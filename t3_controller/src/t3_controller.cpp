@@ -1,15 +1,17 @@
 #include <string>
-
-#include "ros/console.h"
-#include "ros/ros.h"
 #include <vector>
-#include <unistd.h>
 #include <iostream>
 #include <fstream>
 #include <cmath>
 
+#include <unistd.h>
+
+#include "ros/console.h"
+#include "ros/ros.h"
+
+
 // Messages
-#include "t3_controller/control_state.h"
+// #include "t3_controller/control_state.h"
 #include "t3_controller/sensor_state.h"
 
 
@@ -23,7 +25,7 @@ namespace control{
   //constexpr int SPEED = 5;
   //constexpr float ANGLE_DIV = 1.f;
 
-  control_state::State control_state_;
+  // control_state::State control_state_;
   sensor_state::State sensor_state_;
 
   struct TmpObject
@@ -38,13 +40,20 @@ namespace control{
 
  };
 
+  struct TmpLidar
+  {
+    float x;
+    float y;
+    TmpLidar(){};
+  };
+
 
   class Controller
   {
     ros::NodeHandle node;
     ros::Subscriber sub_object;
     ros::Subscriber sub_lidar;
-    ros::Publisher pub;
+    //ros::Publisher pub;
     int count =0;
     const float FOV_H = 1.60469;
     const float FOV_V = 1.31969;
@@ -54,6 +63,8 @@ namespace control{
     const float FOCAL_LENGTH = 348.14820298;
     const double PI = 3.1415926;
 
+    std::vector<control::TmpObject> tmpObject;
+    std::vector<control::TmpLidar> tmpLidar;
 
   public:
     bool enable_debug;
@@ -67,7 +78,8 @@ namespace control{
     }
 
     void callbackObject(const t3_msgs::object_data::ConstPtr& msg);
-    void callbackLidar(const t3_msgs::lidar_array::ConstPtr& msg);
+    void callbackLidar(const sensor_msgs::PointCloud2& msg);
+    
     //void callbackTrafficLight(const t3_msgs::traffic_light_data::ConstPtr& msg);
     void control();
     float calculate_azimuth(control::TmpObject bbox);
@@ -93,7 +105,6 @@ namespace control{
     else{
       depth = PINGPONG_BALL * FOCAL_LENGTH /(bbox.xmax - bbox.xmin);
       p = 0.1 * (exp(depth-64) - exp(-depth+64))/(exp(depth-64) - exp(-depth+64)) + 0.82;
-      // std::cout<< p<< std::endl;
       return {depth*azimuth, depth*p};
     }
   }
@@ -103,47 +114,49 @@ namespace control{
     sensor_state_.object.reduce(msg);
   }
 
-  void Controller::callbackLidar(const t3_msgs::lidar_array::ConstPtr& msg)
+  void Controller::callbackLidar(const sensor_msgs::PointCloud2& msg)
   {
     sensor_state_.lidar.reduce(msg);
   }
   
   void Controller::control()
   {
-    std::vector<control::TmpObject> tmpObject;
+    tmpObject.clear();
+    tmpLidar.clear();
+
 
     if(sensor_state_.object.boundingBoxes.size()>0)
     {
-      for(auto objectBox :sensor_state_.object.boundingBoxes){
-        control::TmpObject tmp;
-        tmp.id = objectBox.id;
-        tmp.xmin = (int)objectBox.xmin*640/352;
-        tmp.ymin = (int)objectBox.ymin*480/352;
-        tmp.xmax = (int)objectBox.xmax*640/352;
-        tmp.ymax = (int)objectBox.ymax*480/352;
-        tmp.probability = objectBox.probability;
-        float azimuth =  calculate_azimuth(tmp);
-        auto depth =  distance(azimuth,tmp);
+      for(auto objectBox :sensor_state_.object.boundingBoxes)
+      {
+        control::TmpObject tmp_object;
+        tmp_object.id = objectBox.id;
+        tmp_object.xmin = (int)objectBox.xmin*640/352;
+        tmp_object.ymin = (int)objectBox.ymin*480/352;
+        tmp_object.xmax = (int)objectBox.xmax*640/352;
+        tmp_object.ymax = (int)objectBox.ymax*480/352;
+        tmp_object.probability = objectBox.probability;
+        float azimuth =  calculate_azimuth(tmp_object);
+        auto depth =  distance(azimuth, tmp_object);
         std::cout << "[" <<depth.first << "," << depth.second << "] ";
-
-        tmpObject.emplace_back(tmp);
+        tmpObject.emplace_back(tmp_object);
       }
       std::cout << "" <<std::endl;
     }
 
-
-    for(auto lidarpoint :sensor_state_.lidar_points.LidarPoints)
+    for(auto lidar_point :sensor_state_.lidar_points.LidarPoints)
     {
-      if(lidarpoint.x != 0 || lidarpoint.y != 0 )
-      {
-        
-      }
+      control::TmpLidar tmp_lidar;
+      tmp_lidar.x = (float) lidar_point.x;
+      tmp_lidar.y = (float) lidar_point.y;
+      tmpLidar.emplace_back(tmp_lidar);
     }
-
-
-
-
   }
+
+
+
+
+
 }
   // namespace control
 

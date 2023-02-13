@@ -7,6 +7,13 @@
 
 #include "t3_msgs/object_data.h"
 #include "t3_msgs/lidar_array.h"
+#include "sensor_msgs/PointCloud2.h"
+#include <pcl/conversions.h>
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <pcl_conversions/pcl_conversions.h>
+#include <laser_geometry/laser_geometry.h>
+
 
 namespace sensor_state
 {
@@ -58,29 +65,30 @@ struct LidarPoint
 {
   float x;
   float y;
-  float z;
 
   LidarPoint()
     : x(0)
    , y(0)
-   , z(0)
    {};
   
 };
 
 struct LidarPoints
 {
-  std::vector<LidarPoint> LidarPoints;
-  void reduce(const t3_msgs::lidar_array::ConstPtr& msg)
+  std::vector<LidarPoint> lidarPoints;
+  void reduce(const sensor_msgs::PointCloud2& msg)
   {
-    LidarPoints.clear();
-    auto points = msg->lidar_points;
+    lidarPoints.clear();
+    pcl::PointCloud<pcl::PointXYZ> msg_cvt;
+    //point_cloud_t::Ptr input_ptr(new point_cloud_t());
+    pcl::fromROSMsg(msg, msg_cvt);
+
+    auto points = msg_cvt->points;
     for(auto& point : points){
-      LidarPoint lidar_point = Lidarpoint();
-      LidarPoint.x = point.x;
-      LidarPoint.y = point.y;
-      LidarPoint.z = point.z;
-      LidarPoints.emplace_back(LidarPoint);
+      LidarPoint lidar_point = LidarPoint();
+      lidar_point.x = point.x;
+      lidar_point.y = point.y;
+      lidarPoints.emplace_back(lidar_point);
     }
   };
 };
