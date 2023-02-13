@@ -11,10 +11,6 @@
    - Write a good estimation algorithm for position
    - Merge data from camera and lidar (**Sensor Fusion**)
 
-## Workflow
-
-![workflow](workflow.png)
-
 ## Project S/W Architecture
 
 ![architecture](architecture.svg)
