@@ -19,7 +19,7 @@
 
 ### Topic Types
 
-- `usb_cam/image_view`
+- `usb_cam/image_raw`
   - [`sensor_msgs/Image.msg`](http://docs.ros.org/en/api/sensor_msgs/html/msg/Image.html)
 - `scan`
   - [`sensor_msgs/LaserScan.msg`](http://docs.ros.org/en/api/sensor_msgs/html/msg/LaserScan.html)
