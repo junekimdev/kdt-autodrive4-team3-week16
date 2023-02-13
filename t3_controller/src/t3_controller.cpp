@@ -144,7 +144,7 @@ namespace control{
       std::cout << "" <<std::endl;
     }
 
-    for(auto lidar_point :sensor_state_.lidar_points.LidarPoints)
+    for(auto lidar_point :sensor_state_.lidar_points.lidarPoints)
     {
       control::TmpLidar tmp_lidar;
       tmp_lidar.x = (float) lidar_point.x;
