@@ -11,9 +11,24 @@
    - Write a good estimation algorithm for position
    - Merge data from camera and lidar (**Sensor Fusion**)
 
+---
+
 ## Project S/W Architecture
 
 ![architecture](architecture.svg)
+
+### Topic Types
+
+- `usb_cam/image_view`
+  - [`sensor_msgs/Image.msg`](http://docs.ros.org/en/api/sensor_msgs/html/msg/Image.html)
+- `scan`
+  - [`sensor_msgs/LaserScan.msg`](http://docs.ros.org/en/api/sensor_msgs/html/msg/LaserScan.html)
+- `lidar_data`
+  - [`sensor_msgs/PointCloud2.msg`](http://docs.ros.org/en/api/sensor_msgs/html/msg/PointCloud2.html)
+- `object_data`
+  - Custom message which includes bounding box info
+
+---
 
 ## Specifications
 
@@ -30,12 +45,16 @@
 - ML model: YOLOv3-tiny
 - ML Pipeline: Pytorch -> Darknet -> ONNX -> TensorRT
 
+---
+
 ## Referenced Repos
 
 - <https://github.com/2damin/yolov3-pytorch>
 - <https://github.com/2damin/yolov3_onnx_rt>
 - <https://github.com/2damin/yolov3_trt_ros>
 - <https://github.com/junekimdev/kdt-autodrive4-team3-week11-12>
+
+---
 
 ## User Guides
 
@@ -88,6 +107,8 @@
    git pull origin master
    ```
 
+---
+
 ## Coding Style
 
 ### Python
@@ -101,6 +122,8 @@ Use `ROS1` style (via `clang-format`)
 > See: <http://wiki.ros.org/CppStyleGuide>
 
 - [Team's Naming Convention](naming_convention.md)
+
+---
 
 ## License
 
