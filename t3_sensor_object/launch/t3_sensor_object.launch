@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE launch>
+<launch>
+  <!-- cam -->
+  <include file="$(find usb_cam)/launch/usb_cam-noviewer.launch"/>
+
+  <!-- processor -->
+  <node name="object" pkg="t3_sensor_object" type="t3_sensor_object.py" output="screen"/>
+</launch>
