@@ -1,0 +1,11 @@
+# Editor
+.vscode/**
+.vs/**
+*.sln
+*.vcx*
+
+# Builds
+x64/
+build/
+devel/
+output/
