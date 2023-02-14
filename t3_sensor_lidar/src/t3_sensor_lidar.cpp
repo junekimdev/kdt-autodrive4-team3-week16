@@ -75,20 +75,20 @@ pcl::PointCloud<pcl::PointXY> Lidar::process(pcl::PointCloud<pcl::PointXY>& clou
   for (const auto& p : cloud_data.points)
   {
     if (p.y >= CLOUD_MIN_Y && p.y <= CLOUD_MAX_Y && p.x >= CLOUD_MIN_X)
-      msg.points.emplace(p);
+      msg.points.emplace_back(p);
   }
   return msg;
 }
 
 void Lidar::publish(pcl::PointCloud<pcl::PointXY>& msg)
 {
-  msg.header.stamp = ros::Time::now();
+  pcl_conversions::toPCL(ros::Time::now(), msg.header.stamp);
   msg.header.frame_id = NAME;
   msg.height = 1;                 // for unorganized dataset
   msg.width = msg.points.size();  // for unorganized dataset
   pub.publish(msg);
   if (enable_debug)
-    ROS_INFO("Pointcloud length: %d", msg.points.size());
+    ROS_INFO("Pointcloud length: %lu", msg.points.size());
 }
 
 }  // namespace sensor
