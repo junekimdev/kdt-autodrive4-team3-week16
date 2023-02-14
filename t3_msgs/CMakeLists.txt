@@ -13,7 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  BoundingBox.t3_msgs
+  BoundingBox.msg
   object_data.msg
 )
 
@@ -25,6 +25,5 @@ generate_messages(
 )
 
 catkin_package(
- INCLUDE_DIRS include
  CATKIN_DEPENDS message_runtime
 )
