@@ -2,7 +2,7 @@
 <!DOCTYPE launch>
 <launch>
   <!-- param -->
-  <rosparam file="$(find controller)/launch/t3_config.yaml" />
+  <rosparam file="$(find t3_controller)/launch/t3_config.yaml" />
 
   <!-- device -->
   <include file="$(find usb_cam)/launch/usb_cam-noviewer.launch"/>

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
   <version>0.0.0</version>
-  <name>t3_contorller</name>
-  <description>t3_contorller</description>
+  <name>t3_controller</name>
+  <description>t3_controller</description>
   <maintainer email="team3@todo.todo">team3</maintainer>
   <license>UNLICENSED</license>
 

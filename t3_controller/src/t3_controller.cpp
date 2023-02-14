@@ -35,7 +35,7 @@ public:
 
 void Controller::callbackObject(const t3_msgs::object_data::ConstPtr& msg)
 {
-  sensor_state.object.reduce(msg);
+  sensor_state.sign.reduce(msg);
 }
 void Controller::callbackLidar(const pcl::PointCloud<pcl::PointXY>::ConstPtr& msg)
 {
@@ -45,6 +45,8 @@ void Controller::callbackLidar(const pcl::PointCloud<pcl::PointXY>::ConstPtr& ms
 void Controller::control()
 {
   // TODO
+  ROS_INFO("sensor_state.object.size: %lu", sensor_state.sign.bboxes.size());
+  ROS_INFO("sensor_state.lidar.size: %lu", sensor_state.lidar.cloud.points.size());
 }
 
 }  // namespace control

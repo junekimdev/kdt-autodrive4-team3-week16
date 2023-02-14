@@ -15,18 +15,14 @@ namespace sensor
 
 struct Sign
 {
-  bool online;
   std::vector<t3_msgs::BoundingBox> bboxes;
 
-  Sign() : online(false), bboxes(std::vector<t3_msgs::BoundingBox>{})
+  Sign() : bboxes(std::vector<t3_msgs::BoundingBox>{})
   {
   }
 
   void reduce(const t3_msgs::object_data::ConstPtr& msg)
   {
-    if (!online)
-      online = true;
-
     // Reset
     bboxes.clear();
 
@@ -57,7 +53,7 @@ struct Lidar
     {
       for (const auto& p : msg->points)
       {
-        cloud.emplace_back(p);
+        cloud.push_back(p);
       }
     }
   }
