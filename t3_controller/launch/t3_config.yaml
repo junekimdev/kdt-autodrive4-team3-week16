@@ -1,0 +1,3 @@
+sensor_object_enable_debug: true
+sensor_lidar_enable_debug: true
+controller_enable_debug: true

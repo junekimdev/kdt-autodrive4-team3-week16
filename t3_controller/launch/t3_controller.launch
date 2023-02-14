@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE launch>
+<launch>
+  <!-- param -->
+  <rosparam file="$(find controller)/launch/t3_config.yaml" />
+
+  <!-- device -->
+  <include file="$(find usb_cam)/launch/usb_cam-noviewer.launch"/>
+  <include file="$(find xycar_lidar)/launch/lidar_noviewer.launch"/>
+  <include file="$(find xycar_motor)/launch/xycar_motor.launch"/>
+
+  <!-- Sensors -->
+  <node name="object" pkg="t3_sensor_object" type="t3_sensor_object.py" output="screen"/>
+  <node name="lidar" pkg="t3_sensor_lidar" type="t3_sensor_lidar" output="screen"/>
+
+  <!-- Controller -->
+  <node name="controller" pkg="t3_controller" type="t3_controller" output="screen"/>
+</launch>
