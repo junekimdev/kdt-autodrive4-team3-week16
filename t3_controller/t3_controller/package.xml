@@ -21,5 +21,8 @@
   <build_export_depend>t3_msgs</build_export_depend>
   <exec_depend>t3_msgs</exec_depend>
 
+  <build_depend>sensor_msgs</build_depend>
+  <build_export_depend>sensor_msgs</build_export_depend>
+  <exec_depend>sensor_msgs</exec_depend>
   <export></export>
 </package>

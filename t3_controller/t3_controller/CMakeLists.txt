@@ -5,16 +5,13 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   t3_msgs
   xycar_msgs
-  pcl_ros
   sensor_msgs
-  
 )
 
 find_package(OpenCV 4.5.5 REQUIRED PATHS ~/OpenCV4/install/lib/cmake/opencv4)
 
 catkin_package(
  INCLUDE_DIRS include
- CATKIN_DEPENDS pcl_ros
 )
 
 include_directories(
