@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE launch>
+<launch>
+  <!-- cam -->
+  <include file="$(find xycar_lidar)/launch/lidar_noviewer.launch"/>
+  <!-- processor -->
+  <node name="controller" pkg="t3_pcl" type="t3_pcl" output="screen"/>
+
+  
+</launch>

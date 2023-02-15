@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE launch>
+<launch>
+  <!-- cam -->
+  <include file="$(find usb_cam)/launch/usb_cam-noviewer.launch"/>
+
+  <!-- processor -->
+  <node name="camera_calibration" pkg="t3_camera_calibration" type="t3_camera_calibration" output="screen"/>
+</launch>

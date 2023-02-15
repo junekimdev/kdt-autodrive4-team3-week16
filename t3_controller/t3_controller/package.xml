@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <version>0.0.0</version>
+  <name>t3_controller</name>
+  <description>t3_controller</description>
+  <maintainer email="team3@todo.todo">team3</maintainer>
+  <license>UNLICENSED</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- dependencies -->
+  <build_depend>roscpp</build_depend>
+  <build_export_depend>roscpp</build_export_depend>
+  <exec_depend>roscpp</exec_depend>
+  
+  <build_depend>pcl_ros</build_depend>
+  <build_export_depend>pcl_ros</build_export_depend>
+  <exec_depend>pcl_ros</exec_depend>
+
+  <build_depend>t3_msgs</build_depend>
+  <build_export_depend>t3_msgs</build_export_depend>
+  <exec_depend>t3_msgs</exec_depend>
+
+  <export></export>
+</package>
