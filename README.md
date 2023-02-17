@@ -20,11 +20,12 @@
 ### Topic Types
 
 - `usb_cam/image_raw`
-  - [`sensor_msgs/Image.msg`](http://docs.ros.org/en/api/sensor_msgs/html/msg/Image.html)
+  - [`sensor_msgs::Image`](http://docs.ros.org/en/api/sensor_msgs/html/msg/Image.html)
 - `scan`
-  - [`sensor_msgs/LaserScan.msg`](http://docs.ros.org/en/api/sensor_msgs/html/msg/LaserScan.html)
+  - [`sensor_msgs::LaserScan`](http://docs.ros.org/en/api/sensor_msgs/html/msg/LaserScan.html)
 - `lidar_data`
-  - [`sensor_msgs/PointCloud2.msg`](http://docs.ros.org/en/api/sensor_msgs/html/msg/PointCloud2.html)
+  - [`pcl::PointCloud<T>`](https://pointclouds.org/documentation/classpcl_1_1_point_cloud.html)
+  - [`pcl::PointXYZ`](https://pointclouds.org/documentation/structpcl_1_1_point_x_y_z.html)
 - `object_data`
   - Custom message which includes bounding box info
 
